@@ -17,9 +17,15 @@ function Buttons() {
     setResult(result.slice(0, result.length - 1));
   };
 
+  // Check if the button is an operator 
+  const confirmOperator = (value) => {
+    return !isNaN(value) || value === '.' || value === '+/-';
+  };
+
+  // Generate buttons
   const buttonList = buttonInputs.map(button => {
     return (
-      <button onClick={handleClick} name={button} className='main-button' key={button}>{button}</button>
+      <button onClick={handleClick} name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
     )
   });
 
