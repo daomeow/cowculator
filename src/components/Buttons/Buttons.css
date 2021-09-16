@@ -15,6 +15,12 @@
 }
 
 .operator {
-  background-color: #fe9241;
+  background-color: #5f9ea0;
+  color: white;
+}
+
+.clear {
+  width: 12rem;
+  background-color: #FA8072;
   color: white;
 }
