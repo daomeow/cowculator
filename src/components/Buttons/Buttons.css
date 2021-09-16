@@ -6,6 +6,7 @@ form {
 input[type="text"] {
   width: 15.5rem;
   height: 3rem;
+  text-align: right;
   /* background-color: black;
   color: white;
   border: 0px; */
@@ -33,7 +34,7 @@ input[type="text"] {
 }
 
 .clear {
-  width: 12rem;
+  width: 8rem;
   background-color: #FA8072;
   color: white;
 }

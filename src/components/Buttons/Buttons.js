@@ -5,8 +5,16 @@ function Buttons() {
   const [result, setResult] = useState('');
 
   const handleClick = (event) => {
-    setResult(event.target.name)
-  }
+    setResult(result.concat(event.target.name));
+  };
+
+  const clearInput = () => {
+    setResult('');
+  };
+
+  const backspaceInput = () => {
+    setResult(result.slice(0, result.length - 1));
+  };
 
   return (
     <main>
@@ -39,7 +47,8 @@ function Buttons() {
           <button onClick={handleClick} name='-' className='main-button operator'>&ndash;</button>
         </section>
         <section>
-          <button onClick={handleClick} className='main-button clear'>Clear</button>
+          <button onClick={clearInput} className='main-button clear'>Clear</button>
+          <button onClick={backspaceInput} className='main-button operator'>C</button>
           <button onClick={handleClick} name='=' className='main-button operator'>=</button>
         </section>
       </section>
