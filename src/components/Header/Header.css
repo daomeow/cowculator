@@ -1,0 +1,13 @@
+h1 {
+  display: flex;
+  font-family: 'Playfair Display', serif;
+  font-size: 45px;
+  font-weight: 100;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.title-icon {
+  font-size: 30px;
+  padding: 15px 0 0 1px;
+}
