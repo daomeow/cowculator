@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Buttons.css';
 
 function Buttons() {
+  const buttonInputs = [7, 8, 9, '÷', 4, 5, 6, 'x', 1, 2, 3, '+', 0, '.', '+/-', '-'];
   const [result, setResult] = useState('');
 
   const handleClick = (event) => {
@@ -16,36 +17,17 @@ function Buttons() {
     setResult(result.slice(0, result.length - 1));
   };
 
+  const buttonList = buttonInputs.map(button => {
+    return (
+      <button onClick={handleClick} name={button} className='main-button' key={button}>{button}</button>
+    )
+  });
+
   return (
     <main>
-      <form>
-        <input type='text' value={result}/>
-      </form>
+      <input type='text' value={result}/>
       <section className='button-container'>
-        <section>
-          <button onClick={handleClick} name='7' className='main-button'>7</button>
-          <button onClick={handleClick} name='8' className='main-button'>8</button>
-          <button onClick={handleClick} name='9' className='main-button'>9</button>
-          <button onClick={handleClick} name='/' className='main-button operator'>&divide;</button>
-        </section>
-        <section>
-          <button onClick={handleClick} name='4' className='main-button'>4</button>
-          <button onClick={handleClick} name='5' className='main-button'>5</button>
-          <button onClick={handleClick} name='6' className='main-button'>6</button>
-          <button onClick={handleClick} name='*' className='main-button operator'>&times;</button>
-        </section>
-        <section>
-          <button onClick={handleClick} name='1' className='main-button'>1</button>
-          <button onClick={handleClick} name='2' className='main-button'>2</button>
-          <button onClick={handleClick} name='3' className='main-button'>3</button>
-          <button onClick={handleClick} name='+' className='main-button operator'>+</button>
-        </section>
-        <section>
-          <button onClick={handleClick} name='0' className='main-button'>0</button>
-          <button onClick={handleClick} name='.' className='main-button'>.</button>
-          <button onClick={handleClick} name='-' className='main-button'>+/-</button>
-          <button onClick={handleClick} name='-' className='main-button operator'>&ndash;</button>
-        </section>
+        {buttonList}
         <section>
           <button onClick={clearInput} className='main-button clear'>Clear</button>
           <button onClick={backspaceInput} className='main-button operator'>C</button>
@@ -57,3 +39,6 @@ function Buttons() {
 }
 
 export default Buttons;
+
+
+// considerations: overflow for inputs 
