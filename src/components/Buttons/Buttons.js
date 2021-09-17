@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './Buttons.css';
 
 function Buttons() {
-  const buttonInputs = [7, 8, 9, '÷', 4, 5, 6, 'x', 1, 2, 3, '+', 0, '.', '+/-', '-'];
+  const buttonInputs = [7, 8, 9, '÷', 4, 5, 6, 'x', 1, 2, 3, '+', 0, '.', '+/-', '-', '(', ')'];
   const [result, setResult] = useState('');
 
   const handleClick = (event) => {
@@ -19,7 +19,7 @@ function Buttons() {
 
   // Check if the button is an operator 
   const confirmOperator = (value) => {
-    return !isNaN(value) || value === '.' || value === '+/-';
+    return !isNaN(value) || value === '.' || value === '+/-' || value === '(' || value === ')';
   };
 
   // Generate buttons
@@ -32,13 +32,13 @@ function Buttons() {
   return (
     <main>
       <input type='text' value={result}/>
+      <section>
+        <button onClick={clearInput} className='main-button clear'>Clear</button>
+        <button onClick={backspaceInput} className='main-button operator'>c</button>
+      </section>
       <section className='button-container'>
         {buttonList}
-        <section>
-          <button onClick={clearInput} className='main-button clear'>Clear</button>
-          <button onClick={backspaceInput} className='main-button operator'>C</button>
-          <button onClick={handleClick} name='=' className='main-button operator'>=</button>
-        </section>
+        <button onClick={handleClick} name='=' className='main-button operator equals'>=</button>
       </section>
     </main>
   )
