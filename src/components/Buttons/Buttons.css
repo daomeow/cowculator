@@ -1,0 +1,41 @@
+main {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="text"] {
+  width: 15.5rem;
+  height: 3rem;
+  text-align: right;
+  /* background-color: black;
+  color: white;
+  border: 0px; */
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 16rem;
+}
+
+.main-button {
+  height: 4rem;
+  width: 4rem;
+  font-weight: lighter;
+  font-size: 1.4rem;
+  background-color: #e0e1e6;
+  color: #888;
+  outline: 1px solid #888;
+}
+
+.operator {
+  background-color: #5f9ea0;
+  color: white;
+}
+
+.clear {
+  width: 8rem;
+  background-color: #FA8072;
+  color: white;
+}
