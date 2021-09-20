@@ -4,12 +4,14 @@ import './Buttons.css';
 function Buttons() {
   const buttonInputs = [7, 8, 9, ' ÷ ', 4, 5, 6, ' x ', 1, 2, 3, ' + ', 0, '.', '+/-', ' - ', '(', ')'];
   const [data, setData] = useState('');
+  const [total, setTotal] = useState(0)
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
   };
 
   const clearInput = () => {
     setData('');
+    setTotal(0);
   };
 
   const backspaceInput = () => {
@@ -30,20 +32,32 @@ function Buttons() {
 
 
   // split the string by spaces >> 1 + 2 + 3 >> [1 '+' 2] ['+' 3] >> [3 '+' 3]
-
   const splitString = () => {
     let numbers = data.split(' ').map(item => {
-      if (item !== '+') {
+      if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
         return parseInt(item);
       } else {
         return item;
       }
     });
-    console.log(numbers)
+    return numbers;
+    // part 2. consider another operator
   }
 
+  const calculateNumbers = () => {
+    let a, operatorString, b;
+    [a, operatorString, b] = splitString();
 
-  // Equals helper method 
+    switch(operatorString) { 
+      case '+': setTotal(a + b); 
+      case '-': setTotal(a - b); 
+      case 'x': setTotal(a * b); 
+      case '÷': setTotal (a / b); 
+    } 
+  }
+  console.log(total)
+
+
 
   return (
     <main>
@@ -54,7 +68,7 @@ function Buttons() {
       </section>
       <section className='button-container'>
         {buttonList}
-        <button onClick={splitString} name='=' className='main-button operator equals'>=</button>
+        <button onClick={calculateNumbers} name='=' className='main-button operator equals'>=</button>
       </section>
     </main>
   )
