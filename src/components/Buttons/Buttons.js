@@ -4,14 +4,13 @@ import './Buttons.css';
 function Buttons() {
   const buttonInputs = [7, 8, 9, ' ÷ ', 4, 5, 6, ' x ', 1, 2, 3, ' + ', 0, '.', '+/-', ' - ', '(', ')'];
   const [data, setData] = useState('');
-  const [total, setTotal] = useState(0)
+
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
   };
 
   const clearInput = () => {
     setData('');
-    setTotal(0);
   };
 
   const backspaceInput = () => {
@@ -49,19 +48,25 @@ function Buttons() {
     [a, operatorString, b] = splitString();
 
     switch(operatorString) { 
-      case '+': setTotal(a + b); 
-      case '-': setTotal(a - b); 
-      case 'x': setTotal(a * b); 
-      case '÷': setTotal (a / b); 
+      case '+': setData(a + b);
+      break; 
+      case '-': setData(a - b);
+      break; 
+      case '÷': setData(a / b);
+      break; 
+      case 'x': setData(a * b); 
+      break;
     } 
   }
-  console.log(total)
 
 
 
   return (
     <main>
-      <input type='text' value={data}/>
+      {data ?
+        <input type='text' value={data}/>
+      : <input type='text' value='0'/>
+      }
       <section>
         <button onClick={clearInput} className='main-button clear'>Clear</button>
         <button onClick={backspaceInput} className='main-button operator'>c</button>
@@ -77,4 +82,3 @@ function Buttons() {
 export default Buttons;
 
 
-// considerations: overflow for inputs 
