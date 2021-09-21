@@ -35,10 +35,9 @@ function Buttons() {
   });
 
 
+  // check position then arrange
   const checkParenthesesPosition = () => {
-    // check position then arrange
     let numbers = data.split(' ');
-
 
     if (numbers[2].includes('(')) {
       let firstNumber = numbers.splice(0, 1);
@@ -46,36 +45,25 @@ function Buttons() {
       let combine = numbers.concat(removedOperator);
       let organized = combine.concat(firstNumber);
       let joinNumbers = organized.join(' ')
-      let glutes = joinNumbers.split(/[()]+/).filter(item => item);
-      console.log(glutes)
-      // return combine.concat(firstNumber);
+      return joinNumbers.split(/[()]+/).filter(item => item);
     } else {
-      return data;
+      const removeParentheses = data.split(/[()]+/).filter(item => item);
+      // console.log(removeParentheses)
+      return removeParentheses;
     }
   };
 
-
-
   // Method to split with parentheses
   const splitWithParentheses = () => {
-    checkParenthesesPosition()
+    let organizedData = checkParenthesesPosition(); 
 
-    //remove parentheses
-    const removeParentheses = data.split(/[()]+/).filter(item => item);
-    // console.log(removeParentheses)
+    // Two arrays of inputs as individual strings 
+    const separateInputs = organizedData.map(item => item.split(''));
+    const combine = separateInputs.flat();
+    const removeSpaces = combine.filter(function(entry) { return entry.trim() != ''; });
 
-    //remove empty space string within array 
-    const testt = removeParentheses.filter(function(entry) { return entry.trim() != ''; });
-    // console.log(testt)
-    
-    const test2 = testt.map(item => item.split(''))
-
-    const boo = test2.flat()
-    const duf = boo.filter(function(entry) { return entry.trim() != ''; });
-    // console.log(duf)
-
-    let numbers = test2.map(item => {
-      // console.log(item)
+    // Change numbers from string to integers & leave operators as strings 
+    let numbers = removeSpaces.map(item => {
       if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
         return parseFloat(item);
       } else {
@@ -83,7 +71,7 @@ function Buttons() {
       }
     });
 
-    // console.log(numbers)
+    console.log(numbers)
   }
   // Method: conditional to render wither or
   // Method: to check for errors
