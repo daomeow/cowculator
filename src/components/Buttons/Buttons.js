@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Buttons.css';
 
 function Buttons() {
@@ -34,8 +34,65 @@ function Buttons() {
     )
   });
 
+
+  const checkParenthesesPosition = () => {
+    // check position then arrange
+    let numbers = data.split(' ');
+
+
+    if (numbers[2].includes('(')) {
+      let firstNumber = numbers.splice(0, 1);
+      let removedOperator = numbers.splice(0, 1);
+      let combine = numbers.concat(removedOperator);
+      let organized = combine.concat(firstNumber);
+      let joinNumbers = organized.join(' ')
+      let glutes = joinNumbers.split(/[()]+/).filter(item => item);
+      console.log(glutes)
+      // return combine.concat(firstNumber);
+    } else {
+      return data;
+    }
+  };
+
+
+
+  // Method to split with parentheses
+  const splitWithParentheses = () => {
+    checkParenthesesPosition()
+
+    //remove parentheses
+    const removeParentheses = data.split(/[()]+/).filter(item => item);
+    // console.log(removeParentheses)
+
+    //remove empty space string within array 
+    const testt = removeParentheses.filter(function(entry) { return entry.trim() != ''; });
+    // console.log(testt)
+    
+    const test2 = testt.map(item => item.split(''))
+
+    const boo = test2.flat()
+    const duf = boo.filter(function(entry) { return entry.trim() != ''; });
+    // console.log(duf)
+
+    let numbers = test2.map(item => {
+      // console.log(item)
+      if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
+        return parseFloat(item);
+      } else {
+        return item;
+      }
+    });
+
+    // console.log(numbers)
+  }
+  // Method: conditional to render wither or
+  // Method: to check for errors
+  // Method: remove parentheses
+
   // split the string by spaces >> 1 + 2 + 3 >> [1 '+' 2] ['+' 3] >> [3 '+' 3]
   const splitString = () => {
+    // console.log(data)
+    // console.log(data.split(' '))
     let numbers = data.split(' ').map(item => {
       if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
         return parseFloat(item);
@@ -48,6 +105,7 @@ function Buttons() {
       setError('Syntax error');
       return error;
     } else {
+      console.log(numbers)
       return numbers;
     }
   };
@@ -56,10 +114,7 @@ function Buttons() {
   const cleanNumbers = () => {
     let a, operator, b, secondOperator, c;
     let numbers = splitString();
-
-    if (error !== 'Syntax error') {
-      [a, operator, b, secondOperator, c] = numbers;
-    }
+    [a, operator, b, secondOperator, c] = numbers;
     
     if (secondOperator === '÷' || secondOperator === 'x') {
       let firstNumber = numbers.splice(0, 1);
@@ -108,7 +163,7 @@ function Buttons() {
       <section className='button-container'>
         {buttonList}
         <button onClick={handleClick} name='.' className='main-button'>.</button>
-        <button onClick={cleanNumbers} className='main-button'>+/-</button>
+        <button onClick={splitWithParentheses} className='main-button'>+/-</button>
         <button onClick={setResult} name='=' className='main-button operator equals'>=</button>
       </section>
     </main>
