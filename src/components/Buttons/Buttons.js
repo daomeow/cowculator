@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Buttons.css';
 
 function Buttons() {
   const buttonInputs = [7, 8, 9, ' ÷ ', 4, 5, 6, ' x ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
   const [data, setData] = useState('');
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState('');
   const [error, setError] = useState('');
 
   const handleClick = (event) => {
@@ -13,7 +13,7 @@ function Buttons() {
 
   const clearInput = () => {
     setData('');
-    setTotal(0);
+    setTotal('');
     setError('');
   };
 
@@ -53,8 +53,6 @@ function Buttons() {
   };
 
   // method to check operator & rearrange 
-  console.log(error)
-
   const cleanNumbers = () => {
     let a, operator, b, secondOperator, c;
     let numbers = splitString();
@@ -94,22 +92,15 @@ function Buttons() {
     };
   };
 
-  console.log(data)
-  console.log(total)
-
   return (
     <main>
-      <input type='text' value={error}/>
-      {/* {data && error !== ''
-        ? <input type='text' value={data}/>
-        : <input type='text' value={error}/>
-      } */}
-      {/* {total !== 0 
-        ? <input type='text' value={total}/>
-        : <input type='text' value={data}/>
-      } */}
-
-
+      {error === ''
+        ? <section className='display'>
+            <div>{total}</div>
+            <div>{data}</div>
+          </section>
+        : <span className='error'>{error}</span>
+      }
       <section>
         <button onClick={clearInput} className='main-button clear'>Clear</button>
         <button onClick={backspaceInput} className='main-button operator'>c</button>
