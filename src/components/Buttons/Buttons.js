@@ -6,6 +6,7 @@ function Buttons() {
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
   const [error, setError] = useState('');
+  // const [hasParentheses, setHasParentheses] = useState(false);
 
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
@@ -34,7 +35,6 @@ function Buttons() {
     )
   });
 
-
   // check position then arrange
   const checkParenthesesPosition = () => {
     let numbers = data.split(' ');
@@ -44,19 +44,16 @@ function Buttons() {
       let removedOperator = numbers.splice(0, 1);
       let combine = numbers.concat(removedOperator);
       let organized = combine.concat(firstNumber);
-      let joinNumbers = organized.join(' ')
+      let joinNumbers = organized.join(' ');
       return joinNumbers.split(/[()]+/).filter(item => item);
     } else {
-      const removeParentheses = data.split(/[()]+/).filter(item => item);
-      // console.log(removeParentheses)
-      return removeParentheses;
+      return data.split(/[()]+/).filter(item => item);
     }
   };
 
   // Method to split with parentheses
   const splitWithParentheses = () => {
     let organizedData = checkParenthesesPosition(); 
-
     // Two arrays of inputs as individual strings 
     const separateInputs = organizedData.map(item => item.split(''));
     const combine = separateInputs.flat();
@@ -71,17 +68,19 @@ function Buttons() {
       }
     });
 
-    console.log(numbers)
+    if (numbers.length > 5) {
+      setError('Syntax error');
+      return error;
+    } else {
+      console.log(numbers)
+      return numbers;
+    }
   }
-  // Method: conditional to render wither or
-  // Method: to check for errors
-  // Method: remove parentheses
 
   // split the string by spaces >> 1 + 2 + 3 >> [1 '+' 2] ['+' 3] >> [3 '+' 3]
   const splitString = () => {
-    // console.log(data)
-    // console.log(data.split(' '))
-    let numbers = data.split(' ').map(item => {
+    let allNumbers = data.split(' ')
+    let numbers = allNumbers.map(item => {
       if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
         return parseFloat(item);
       } else {
@@ -93,12 +92,11 @@ function Buttons() {
       setError('Syntax error');
       return error;
     } else {
-      console.log(numbers)
       return numbers;
     }
   };
 
-  // method to check operator & rearrange 
+  // method to check operator & rearrange (without parentheses)
   const cleanNumbers = () => {
     let a, operator, b, secondOperator, c;
     let numbers = splitString();
@@ -123,9 +121,17 @@ function Buttons() {
     };
   };
 
+  const checkForParentheses = () => {
+    if (data.includes('(')) {
+      return splitWithParentheses();
+    } else {
+      return cleanNumbers();
+    }
+  }
+
   const setResult = () => {
     let a, operator, b, secondOperator, c;
-    [a, operator, b, secondOperator, c] = cleanNumbers();
+    [a, operator, b, secondOperator, c] = checkForParentheses();
 
     if (splitString().length > 3) {
       let firstResult = calculateNumbers(a, operator, b);
