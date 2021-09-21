@@ -4,6 +4,8 @@ import './Buttons.css';
 function Buttons() {
   const buttonInputs = [7, 8, 9, ' ÷ ', 4, 5, 6, ' x ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
   const [data, setData] = useState('');
+  const [total, setTotal] = useState(0)
+  const [error, setError] = useState('');
 
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
@@ -11,6 +13,7 @@ function Buttons() {
 
   const clearInput = () => {
     setData('');
+    setTotal(0)
   };
 
   const backspaceInput = () => {
@@ -54,6 +57,7 @@ function Buttons() {
     return numbers;
   }
 
+
   // method to check operator & rearrange 
   const cleanNumbers = () => {
     let a, operator, b, secondOperator, c;
@@ -82,22 +86,22 @@ function Buttons() {
 
   const setResult = () => {
     let a, operator, b, secondOperator, c;
-    // [a, operator, b, secondOperator, c] = splitString();
     [a, operator, b, secondOperator, c] = cleanNumbers();
 
     if (splitString().length > 3) {
       let firstResult = calculateNumbers(a, operator, b)
-      setData(calculateNumbers(firstResult, secondOperator, c));
+      setTotal(calculateNumbers(firstResult, secondOperator, c));
     } else if (splitString().length === 3) {
-      setData(calculateNumbers(a, operator, b));
+      setTotal(calculateNumbers(a, operator, b));
     }
   }
+  console.log(total)
 
   return (
     <main>
-      {data ?
-        <input type='text' value={data}/>
-      : <input type='text' value='0'/>
+      {total !== 0 
+        ? <input type='text' value={total}/>
+        : <input type='text' value={data}/>
       }
       <section>
         <button onClick={clearInput} className='main-button clear'>Clear</button>
