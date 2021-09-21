@@ -6,7 +6,8 @@ function Buttons() {
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
   const [error, setError] = useState('');
-  // const [hasParentheses, setHasParentheses] = useState(false);
+  const [lastInput, setLastInput] = useState('')
+  
 
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
@@ -141,6 +142,22 @@ function Buttons() {
     };
   };
 
+  // Toggle last integer to be positive or negative
+  const toggleNegativePositive = () => {
+    let number = parseFloat(data.slice(-1));
+    
+
+
+
+    // if (integer === 1) {
+    //   console.log('positive')
+    //   setData(-Math.abs(integer));
+    // } else if (integer === -1) {
+    //   console.log('negative')
+    //   setData(Math.abs(integer));
+    // }
+  }
+
   return (
     <main>
       {error === ''
@@ -157,7 +174,7 @@ function Buttons() {
       <section className='button-container'>
         {buttonList}
         <button onClick={handleClick} name='.' className='main-button'>.</button>
-        <button onClick={splitWithParentheses} className='main-button'>+/-</button>
+        <button onClick={toggleNegativePositive} className='main-button'>+/-</button>
         <button onClick={setResult} name='=' className='main-button operator equals'>=</button>
       </section>
     </main>
