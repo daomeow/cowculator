@@ -145,17 +145,24 @@ function Buttons() {
   // Toggle last integer to be positive or negative
   const toggleNegativePositive = () => {
     let number = parseFloat(data.slice(-1));
+    let checkNumber = Math.sign(number)
     
+    console.log(number)
+    console.log(checkNumber)
 
-
-
-    // if (integer === 1) {
-    //   console.log('positive')
-    //   setData(-Math.abs(integer));
-    // } else if (integer === -1) {
-    //   console.log('negative')
-    //   setData(Math.abs(integer));
-    // }
+    if (checkNumber === 1) {
+      return -Math.abs(number);
+    } else if (checkNumber === -1) {
+      return Math.abs(number);
+    }
+  };
+  
+  const updateWithToggle = () => {
+    // convert back to string 
+    // set data to include new number >> remove last >> add number as that 
+    let number = toggleNegativePositive().toString();
+    let newData = data.substring(0, data.length -1);
+    setData(newData + number);
   }
 
   return (
@@ -174,7 +181,7 @@ function Buttons() {
       <section className='button-container'>
         {buttonList}
         <button onClick={handleClick} name='.' className='main-button'>.</button>
-        <button onClick={toggleNegativePositive} className='main-button'>+/-</button>
+        <button onClick={updateWithToggle} className='main-button'>+/-</button>
         <button onClick={setResult} name='=' className='main-button operator equals'>=</button>
       </section>
     </main>
