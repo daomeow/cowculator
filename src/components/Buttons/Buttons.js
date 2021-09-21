@@ -6,8 +6,6 @@ function Buttons() {
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
   const [error, setError] = useState('');
-  const [lastInput, setLastInput] = useState('')
-  
 
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
@@ -142,24 +140,30 @@ function Buttons() {
     };
   };
 
+  // Check if input can be set to +/-
+  const checkInputInteger = () => {
+    if (data.length == 0 || isNaN(data)) {
+      setError('Syntax Error');
+    } else {
+      return parseFloat(data.slice(-1));
+    }
+  }
+
   // Toggle last integer to be positive or negative
   const toggleNegativePositive = () => {
-    let number = parseFloat(data.slice(-1));
-    let checkNumber = Math.sign(number)
+    let number = checkInputInteger();
+    let checkNumber = Math.sign(number);
     
-    console.log(number)
-    console.log(checkNumber)
-
-    if (checkNumber === 1) {
+    if (checkNumber === 1 && !error) {
       return -Math.abs(number);
-    } else if (checkNumber === -1) {
+    } else if (checkNumber === -1 && !error) {
       return Math.abs(number);
+    } else {
+      return error;
     }
   };
   
   const updateWithToggle = () => {
-    // convert back to string 
-    // set data to include new number >> remove last >> add number as that 
     let number = toggleNegativePositive().toString();
     let newData = data.substring(0, data.length -1);
     setData(newData + number);
