@@ -13,11 +13,13 @@ function Buttons() {
 
   const clearInput = () => {
     setData('');
-    setTotal(0)
+    setTotal(0);
+    setError('');
   };
 
   const backspaceInput = () => {
     setData(data.slice(0, data.length - 1));
+    setError('');
   };
 
   // Check if the button is an operator 
@@ -41,14 +43,25 @@ function Buttons() {
         return item;
       }
     });
-    return numbers;
+
+    if (numbers.length > 5) {
+      setError('Syntax error');
+      return error;
+    } else {
+      return numbers;
+    }
   };
 
   // method to check operator & rearrange 
+  console.log(error)
+
   const cleanNumbers = () => {
     let a, operator, b, secondOperator, c;
     let numbers = splitString();
-    [a, operator, b, secondOperator, c] = numbers;
+
+    if (error !== 'Syntax error') {
+      [a, operator, b, secondOperator, c] = numbers;
+    }
     
     if (secondOperator === '÷' || secondOperator === 'x') {
       let firstNumber = numbers.splice(0, 1);
@@ -74,19 +87,29 @@ function Buttons() {
     [a, operator, b, secondOperator, c] = cleanNumbers();
 
     if (splitString().length > 3) {
-      let firstResult = calculateNumbers(a, operator, b)
+      let firstResult = calculateNumbers(a, operator, b);
       setTotal(calculateNumbers(firstResult, secondOperator, c));
     } else if (splitString().length === 3) {
       setTotal(calculateNumbers(a, operator, b));
     };
   };
 
+  console.log(data)
+  console.log(total)
+
   return (
     <main>
-      {total !== 0 
+      <input type='text' value={error}/>
+      {/* {data && error !== ''
+        ? <input type='text' value={data}/>
+        : <input type='text' value={error}/>
+      } */}
+      {/* {total !== 0 
         ? <input type='text' value={total}/>
         : <input type='text' value={data}/>
-      }
+      } */}
+
+
       <section>
         <button onClick={clearInput} className='main-button clear'>Clear</button>
         <button onClick={backspaceInput} className='main-button operator'>c</button>
