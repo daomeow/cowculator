@@ -4,7 +4,7 @@ import './Buttons.css';
 function Buttons() {
   const buttonInputs = [7, 8, 9, ' ÷ ', 4, 5, 6, ' x ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
   const [data, setData] = useState('');
-  const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState(0);
   const [error, setError] = useState('');
 
   const handleClick = (event) => {
@@ -32,19 +32,6 @@ function Buttons() {
     )
   });
 
-  // Toggle last integer to be positive or negative 
-  // const toggleNegativePostivie = () => {
-  //   let integer = Math.sign(splitString().pop())
-  //   console.log(integer)
-  //   if (integer === 1) {
-  //     console.log('pos')
-  //     setData(-Math.abs(integer));
-  //   } else if (integer === -1) {
-  //     console.log('neg')
-  //     setData(Math.abs(integer));
-  //   }
-  // }
-
   // split the string by spaces >> 1 + 2 + 3 >> [1 '+' 2] ['+' 3] >> [3 '+' 3]
   const splitString = () => {
     let numbers = data.split(' ').map(item => {
@@ -55,8 +42,7 @@ function Buttons() {
       }
     });
     return numbers;
-  }
-
+  };
 
   // method to check operator & rearrange 
   const cleanNumbers = () => {
@@ -71,9 +57,8 @@ function Buttons() {
       return combine.concat(firstNumber);
     } else {
       return numbers;
-    }
-  }
-
+    };
+  };
 
   const calculateNumbers = (a, operator, b) => {
     switch(operator) { 
@@ -81,8 +66,8 @@ function Buttons() {
       case '-': return a - b; 
       case 'x': return a * b; 
       case '÷': return a / b;
-    } 
-  }
+    };
+  };
 
   const setResult = () => {
     let a, operator, b, secondOperator, c;
@@ -93,9 +78,8 @@ function Buttons() {
       setTotal(calculateNumbers(firstResult, secondOperator, c));
     } else if (splitString().length === 3) {
       setTotal(calculateNumbers(a, operator, b));
-    }
-  }
-  console.log(total)
+    };
+  };
 
   return (
     <main>
