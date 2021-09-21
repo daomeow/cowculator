@@ -8,6 +8,7 @@ input[type="text"] {
   width: 15.5rem;
   height: 3rem;
   text-align: right;
+  font-size: 18px;
   /* background-color: black;
   color: white;
   border: 0px; */
@@ -20,7 +21,7 @@ input[type="text"] {
 }
 
 .main-button {
-  height: 4rem;
+  height: 3rem;
   width: 4rem;
   font-weight: lighter;
   font-size: 1.4rem;
@@ -35,7 +36,11 @@ input[type="text"] {
 }
 
 .clear {
-  width: 8rem;
+  width: 12rem;
   background-color: #FA8072;
   color: white;
+}
+
+.equals {
+  width: 8rem;
 }
