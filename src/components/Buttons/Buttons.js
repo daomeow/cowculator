@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './Buttons.css';
 
 function Buttons() {
-  const buttonInputs = [7, 8, 9, ' ÷ ', 4, 5, 6, ' x ', 1, 2, 3, ' + ', 0, '.', '+/-', ' - ', '(', ')'];
+  const buttonInputs = [7, 8, 9, ' ÷ ', 4, 5, 6, ' x ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
   const [data, setData] = useState('');
 
   const handleClick = (event) => {
@@ -29,12 +29,25 @@ function Buttons() {
     )
   });
 
+  // Toggle last integer to be positive or negative 
+  const toggleNegativePostivie = () => {
+    let integer = Math.sign(data);
+    console.log(integer)
+    if (integer === 1) {
+      setData(-Math.abs(data));
+    } else if (integer === -1) {
+      setData(Math.abs(data));
+    }
+
+
+    console.log(data)
+  }
 
   // split the string by spaces >> 1 + 2 + 3 >> [1 '+' 2] ['+' 3] >> [3 '+' 3]
   const splitString = () => {
     let numbers = data.split(' ').map(item => {
       if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
-        return parseInt(item);
+        return parseFloat(item);
       } else {
         return item;
       }
@@ -73,6 +86,8 @@ function Buttons() {
       </section>
       <section className='button-container'>
         {buttonList}
+        <button onClick={handleClick} name='.' className='main-button'>.</button>
+        <button onClick={toggleNegativePostivie} className='main-button'>+/-</button>
         <button onClick={calculateNumbers} name='=' className='main-button operator equals'>=</button>
       </section>
     </main>
