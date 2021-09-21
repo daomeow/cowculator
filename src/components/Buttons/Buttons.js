@@ -54,6 +54,23 @@ function Buttons() {
     return numbers;
   }
 
+  // method to check operator & rearrange 
+  const cleanNumbers = () => {
+    let a, operator, b, secondOperator, c;
+    let numbers = splitString();
+    [a, operator, b, secondOperator, c] = numbers;
+    
+    if (secondOperator === '÷' || secondOperator === 'x') {
+      let firstNumber = numbers.splice(0, 1);
+      let removedOperator = numbers.splice(0, 1);
+      let combine = numbers.concat(removedOperator);
+      return combine.concat(firstNumber);
+    } else {
+      return numbers;
+    }
+  }
+
+
   const calculateNumbers = (a, operator, b) => {
     switch(operator) { 
       case '+': return a + b;
@@ -63,12 +80,10 @@ function Buttons() {
     } 
   }
 
-  // method to check operator & rearrange 
-
-
   const setResult = () => {
     let a, operator, b, secondOperator, c;
-    [a, operator, b, secondOperator, c] = splitString();
+    // [a, operator, b, secondOperator, c] = splitString();
+    [a, operator, b, secondOperator, c] = cleanNumbers();
 
     if (splitString().length > 3) {
       let firstResult = calculateNumbers(a, operator, b)
@@ -91,7 +106,7 @@ function Buttons() {
       <section className='button-container'>
         {buttonList}
         <button onClick={handleClick} name='.' className='main-button'>.</button>
-        <button onClick={handleClick} className='main-button'>+/-</button>
+        <button onClick={cleanNumbers} className='main-button'>+/-</button>
         <button onClick={setResult} name='=' className='main-button operator equals'>=</button>
       </section>
     </main>
