@@ -29,6 +29,7 @@ function Buttons() {
 
   const backspaceInput = () => {
     setData(data.slice(0, data.length - 1));
+    setTotal('');
     setError('');
   };
 
@@ -46,14 +47,14 @@ function Buttons() {
 
   // check position then arrange
   const checkParenthesesPosition = () => {
-    let numbers = data.split(' ');
+    const numbers = data.split(' ');
 
     if (numbers[2].includes('(')) {
-      let firstNumber = numbers.splice(0, 1);
-      let removedOperator = numbers.splice(0, 1);
-      let combine = numbers.concat(removedOperator);
-      let organized = combine.concat(firstNumber);
-      let joinNumbers = organized.join(' ');
+      const firstNumber = numbers.splice(0, 1);
+      const removedOperator = numbers.splice(0, 1);
+      const combine = numbers.concat(removedOperator);
+      const organized = combine.concat(firstNumber);
+      const joinNumbers = organized.join(' ');
       return joinNumbers.split(/[()]+/).filter(item => item);
     } else {
       return data.split(/[()]+/).filter(item => item);
@@ -62,25 +63,18 @@ function Buttons() {
 
   // Method to split with parentheses
   const splitWithParentheses = () => {
-    let organizedData = checkParenthesesPosition(); 
+    const organizedData = checkParenthesesPosition(); 
     // Two arrays of inputs as individual strings 
     const separateInputs = organizedData.map(item => item.split(''));
     const combine = separateInputs.flat();
     const removeSpaces = combine.filter(function(entry) { return entry.trim() !== ''; });
-
-    // Change numbers from string to integers & leave operators as strings 
-    let numbers = removeSpaces.map(item => {
-      if (item !== '+' && item !== '-' && item !== '*' && item !== '÷') {
-        return parseFloat(item);
-      } else {
-        return item;
-      }
-    });
-
-    if (!checkForError(numbers)) {
-      return numbers;
-    } else {
+    const numbers = updateNumbersToIntegers(removeSpaces);
+    
+    if (numbers.length > 5) {
+      setError('Syntax error');
       return error;
+    } else {
+      return numbers;
     };
   };
 
@@ -90,36 +84,42 @@ function Buttons() {
     } else {
       return data;
     }
-  }
+  };
 
   // split the string by spaces >> 1 + 2 + 3 >> [1 '+' 2] ['+' 3] >> [3 '+' 3]
-  const splitString = () => {
-    let inputs = determineKeyOrClick();
-    let allNumbers = inputs.split(' ');
-    let numbers = allNumbers.map(item => {
+  const updateNumbersToIntegers = (numbers) => {
+    return numbers.map(item => {
       if (item !== '+' && item !== '-' && item !== '*' && item !== '÷') {
         return parseFloat(item);
       } else {
         return item;
       }
     });
+  };
 
-    if (!checkForError(numbers)) {
-      return numbers;
-    } else {
+  const splitString = () => {
+    const inputs = determineKeyOrClick();
+    const allNumbers = inputs.split(' ');
+    const numbers = updateNumbersToIntegers(allNumbers);
+
+    if (numbers.length > 5) {
+      console .log('here')
+      setError('Syntax error');
       return error;
-    };
+    } else {
+      return numbers;
+    }
   };
 
   // method to check operator & rearrange (without parentheses)
   const cleanNumbers = () => {
-    let numbers = splitString();
-    let secondOperator = numbers[3];
+    const numbers = splitString();
+    const secondOperator = numbers[3];
     
     if (secondOperator === '÷' || secondOperator === '*') {
-      let firstNumber = numbers.splice(0, 1);
-      let removedOperator = numbers.splice(0, 1);
-      let combine = numbers.concat(removedOperator);
+      const firstNumber = numbers.splice(0, 1);
+      const removedOperator = numbers.splice(0, 1);
+      const combine = numbers.concat(removedOperator);
       return combine.concat(firstNumber);
     } else {
       return numbers;
@@ -134,16 +134,6 @@ function Buttons() {
       case '/': return a / b;
       default: return error;
     };
-  };
-
-  // Displays syntax error if more than 2 operators or NaN
-  const checkForError = (numbers) => {
-    if (numbers.length > 5 || isNaN(numbers)) {
-      setError('Syntax error');
-      return error;
-    } else {
-      return false;
-    }
   };
 
   const checkForParentheses = () => {
@@ -173,12 +163,12 @@ function Buttons() {
     } else {
       return parseFloat(data.slice(-1));
     }
-  }
+  };
 
   // Toggle last integer to be positive or negative
   const toggleNegativePositive = () => {
-    let number = checkInputInteger();
-    let checkNumber = Math.sign(number);
+    const number = checkInputInteger();
+    const checkNumber = Math.sign(number);
     
     if (checkNumber === 1 && !error) {
       return -Math.abs(number);
@@ -190,8 +180,8 @@ function Buttons() {
   };
   
   const updateWithToggle = () => {
-    let number = toggleNegativePositive().toString();
-    let newData = data.substring(0, data.length -1);
+    const number = toggleNegativePositive().toString();
+    const newData = data.substring(0, data.length -1);
     setData(newData + number);
   };
 
@@ -216,7 +206,7 @@ function Buttons() {
       </section>
     </main>
   )
-}
+};
 
 export default Buttons;
 
