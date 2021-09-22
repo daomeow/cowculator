@@ -101,7 +101,7 @@ function Calculator() {
     const numbers = splitString();
     const secondOperator = numbers[3];
     
-    if (secondOperator === '÷' || secondOperator === '*') {
+    if (secondOperator === '/' || secondOperator === '*') {
       return sortInputsOrder(numbers);
     } else {
       return numbers;
@@ -117,12 +117,14 @@ function Calculator() {
   };
 
   const setResult = () => {
+    console.log('here')
     let a, operator, b, secondOperator, c;
     [a, operator, b, secondOperator, c] = checkForParentheses();
-
+    console.log(checkForParentheses())
     if (checkForParentheses().length > 3) {
       let firstResult = calculateNumbers(a, operator, b);
       setTotal(calculateNumbers(firstResult, secondOperator, c));
+      console.log('hi')
     } else if (checkForParentheses().length === 3) {
       setTotal(calculateNumbers(a, operator, b));
     };
@@ -141,7 +143,7 @@ function Calculator() {
   // Updates numbers to integers and leaves operators as strings 
   const updateNumbersToIntegers = (numbers) => {
     return numbers.map(item => {
-      if (item !== '+' && item !== '-' && item !== '*' && item !== '÷') {
+      if (item !== '+' && item !== '-' && item !== '*' && item !== '/') {
         return parseFloat(item);
       } else {
         return item;
