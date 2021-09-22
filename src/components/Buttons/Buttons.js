@@ -50,15 +50,12 @@ function Buttons() {
     const numbers = data.split(' ');
 
     if (numbers[2].includes('(')) {
-      const firstNumber = numbers.splice(0, 1);
-      const removedOperator = numbers.splice(0, 1);
-      const combine = numbers.concat(removedOperator);
-      const organized = combine.concat(firstNumber);
+      const organized = sortInputsOrder(numbers);
       const joinNumbers = organized.join(' ');
       return joinNumbers.split(/[()]+/).filter(item => item);
     } else {
       return data.split(/[()]+/).filter(item => item);
-    }
+    };
   };
 
   // Method to split with parentheses
@@ -117,10 +114,7 @@ function Buttons() {
     const secondOperator = numbers[3];
     
     if (secondOperator === '÷' || secondOperator === '*') {
-      const firstNumber = numbers.splice(0, 1);
-      const removedOperator = numbers.splice(0, 1);
-      const combine = numbers.concat(removedOperator);
-      return combine.concat(firstNumber);
+      return sortInputsOrder(numbers);
     } else {
       return numbers;
     };
@@ -184,6 +178,14 @@ function Buttons() {
     const newData = data.substring(0, data.length -1);
     setData(newData + number);
   };
+
+    // Moves first number and operator to the back
+    const sortInputsOrder = (numbers) => {
+      const firstNumber = numbers.splice(0, 1);
+      const removedOperator = numbers.splice(0, 1);
+      const combine = numbers.concat(removedOperator);
+      return combine.concat(firstNumber);
+    };
 
   return (
     <main>
