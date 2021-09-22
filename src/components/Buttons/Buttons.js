@@ -45,7 +45,7 @@ function Buttons() {
     )
   });
 
-  // check position then arrange
+   // Addresses data to follow  parentheses order of operations 
   const checkParenthesesPosition = () => {
     const numbers = data.split(' ');
 
@@ -83,32 +83,20 @@ function Buttons() {
     }
   };
 
-  // split the string by spaces >> 1 + 2 + 3 >> [1 '+' 2] ['+' 3] >> [3 '+' 3]
-  const updateNumbersToIntegers = (numbers) => {
-    return numbers.map(item => {
-      if (item !== '+' && item !== '-' && item !== '*' && item !== '÷') {
-        return parseFloat(item);
-      } else {
-        return item;
-      }
-    });
-  };
-
   const splitString = () => {
     const inputs = determineKeyOrClick();
     const allNumbers = inputs.split(' ');
     const numbers = updateNumbersToIntegers(allNumbers);
 
     if (numbers.length > 5) {
-      console .log('here')
       setError('Syntax error');
       return error;
     } else {
       return numbers;
-    }
+    };
   };
 
-  // method to check operator & rearrange (without parentheses)
+  // Addresses data to follow order of operations  
   const cleanNumbers = () => {
     const numbers = splitString();
     const secondOperator = numbers[3];
@@ -117,16 +105,6 @@ function Buttons() {
       return sortInputsOrder(numbers);
     } else {
       return numbers;
-    };
-  };
-
-  const calculateNumbers = (a, operator, b) => {
-    switch(operator) { 
-      case '+': return a + b;
-      case '-': return a - b; 
-      case '*': return a * b; 
-      case '/': return a / b;
-      default: return error;
     };
   };
 
@@ -148,6 +126,35 @@ function Buttons() {
     } else if (checkForParentheses().length === 3) {
       setTotal(calculateNumbers(a, operator, b));
     };
+  };
+
+  const calculateNumbers = (a, operator, b) => {
+    switch(operator) { 
+      case '+': return a + b;
+      case '-': return a - b; 
+      case '*': return a * b; 
+      case '/': return a / b;
+      default: return error;
+    };
+  };
+
+  // Updates numbers to integers and leaves operators as strings 
+  const updateNumbersToIntegers = (numbers) => {
+    return numbers.map(item => {
+      if (item !== '+' && item !== '-' && item !== '*' && item !== '÷') {
+        return parseFloat(item);
+      } else {
+        return item;
+      }
+    });
+  };
+
+  // Moves first number and operator to the back
+  const sortInputsOrder = (numbers) => {
+    const firstNumber = numbers.splice(0, 1);
+    const removedOperator = numbers.splice(0, 1);
+    const combine = numbers.concat(removedOperator);
+    return combine.concat(firstNumber);
   };
 
   // Check if input can be set to +/-
@@ -178,14 +185,6 @@ function Buttons() {
     const newData = data.substring(0, data.length -1);
     setData(newData + number);
   };
-
-    // Moves first number and operator to the back
-    const sortInputsOrder = (numbers) => {
-      const firstNumber = numbers.splice(0, 1);
-      const removedOperator = numbers.splice(0, 1);
-      const combine = numbers.concat(removedOperator);
-      return combine.concat(firstNumber);
-    };
 
   return (
     <main>
