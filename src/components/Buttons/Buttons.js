@@ -6,10 +6,21 @@ function Buttons() {
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
   const [error, setError] = useState('');
+  const keyPressedNumbersAllowed = ['0','1','2','3','4','5','6','7','8','9'];
+  const keyPressedOperatorsAllowed = ['/', '*', '-', '+', 'Enter'];
+
 
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
   };
+  
+  const handleKey = (event) => {
+    let keyName = event.key
+    console.log(keyName)
+    setData(data.concat(event.key))
+    
+  }
+  console.log(data)
 
   const clearInput = () => {
     setData('');
@@ -30,7 +41,7 @@ function Buttons() {
   // Generate buttons
   const buttonList = buttonInputs.map(button => {
     return (
-      <button onClick={handleClick} name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
+      <button onClick={handleClick} onKeyDown={handleKey} tabIndex="0" name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
     )
   });
 
@@ -71,7 +82,6 @@ function Buttons() {
       setError('Syntax error');
       return error;
     } else {
-      console.log(numbers)
       return numbers;
     }
   }
