@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import './Buttons.css';
+import './Calculator.css';
 
-function Buttons() {
+function Calculator() {
   const buttonInputs = [7, 8, 9, ' / ', 4, 5, 6, ' * ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
@@ -209,6 +209,6 @@ function Buttons() {
   )
 };
 
-export default Buttons;
+export default Calculator;
 
 

@@ -1,12 +1,13 @@
 import './App.css';
 import Header from '../Header/Header';
-import Buttons from '../Buttons/Buttons';
+import Buttons from '../Calculator/Calculator';
+import Calculator from '../Calculator/Calculator';
 
 function App() {
   return (
     <div className="app">
       <Header/>
-      <Buttons></Buttons>
+      <Calculator></Calculator>
     </div>
   );
 }
