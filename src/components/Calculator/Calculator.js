@@ -87,8 +87,8 @@ function Calculator() {
     const inputs = determineKeyOrClick();
     const allNumbers = inputs.split(' ');
     const numbers = updateNumbersToIntegers(allNumbers);
-
-    if (numbers.length > 5) {
+    
+    if (numbers.length > 5 || numbers.map(num => num === NaN)) {
       setError('Syntax error');
       return error;
     } else {
@@ -119,7 +119,7 @@ function Calculator() {
   const setResult = () => {
     let a, operator, b, secondOperator, c;
     [a, operator, b, secondOperator, c] = checkForParentheses();
-    console.log(checkForParentheses())
+
     if (checkForParentheses().length > 3) {
       let firstResult = calculateNumbers(a, operator, b);
       setTotal(calculateNumbers(firstResult, secondOperator, c));
@@ -159,7 +159,6 @@ function Calculator() {
 
   // Check if input can be set to +/-
   const checkInputInteger = () => {
-    // console.log('here')
     if (data.length === 0 || isNaN(data.slice(-1))) {
       setError('Syntax Error');
     } else {
