@@ -77,15 +77,11 @@ function Buttons() {
       }
     });
 
-    console.log(numbers.length)
-    if (numbers.length > 5) {
-      console.log('here')
-      // setError('Syntax error');
-      return error;
-    } else {
-      console.log(numbers)
+    if (!checkForError(numbers)) {
       return numbers;
-    }
+    } else {
+      return error;
+    };
   };
 
   const determineKeyOrClick = () => {
@@ -108,11 +104,11 @@ function Buttons() {
       }
     });
 
-    // if (!checkForError(numbers)) {
-    //   return numbers;
-    // } else {
-    //   return error;
-    // };
+    if (!checkForError(numbers)) {
+      return numbers;
+    } else {
+      return error;
+    };
   };
 
   // method to check operator & rearrange (without parentheses)
@@ -140,14 +136,15 @@ function Buttons() {
     };
   };
 
-  // const checkForError = (numbers) => {
-  //   if (numbers.length > 5 || isNaN(numbers)) {
-  //     setError('Syntax error');
-  //     return error;
-  //   } else {
-  //     return false;
-  //   }
-  // };
+  // Displays syntax error if more than 2 operators or NaN
+  const checkForError = (numbers) => {
+    if (numbers.length > 5 || isNaN(numbers)) {
+      setError('Syntax error');
+      return error;
+    } else {
+      return false;
+    }
+  };
 
   const checkForParentheses = () => {
     if (data.includes('(')) {
