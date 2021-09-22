@@ -12,7 +12,7 @@ describe('Calculator', () => {
       .get('[name="+/-"]').contains('+/-')
   });
 
-  // Functionality to divide, multiply, add, and subtract 
+  // Functionality to divide, multiply, add, and subtract without parentheses 
   it('should be able to divide whole numbers', () => {
     cy.get('[name="1"]').click()
       .get('[name="0"]').click()
@@ -52,4 +52,42 @@ describe('Calculator', () => {
       .get('.display > :nth-child(1)').contains(36)
   });
 
+  it('should calculate numbers following the order of operations', () => {
+    cy.get('[name="2"]').click()
+      .get('[name=" + "]').click()
+      .get('[name="3"]').click()
+      .get('[name=" * "]').click()
+      .get('[name="7"]').click()
+      .get('[name="="]').click()
+      .get('.display > :nth-child(1)').contains(23)
+  });
+
+  it('should consider parentheses when calculating', () => {
+    cy.get('[name="8"]').click()
+    .get('[name=" + "]').click()
+    .get('[name="("]').click()
+    .get('[name="2"]').click()
+    .get('[name=" * "]').click()
+    .get('[name=")"]').click()
+    .get('[name="5"]').click()
+    .get('[name="="]').click()
+    .get('.display > :nth-child(1)').contains(18)
+  });
+
+  it('should be able to make a positive input negative after clicking button', () => {
+    cy.get('[name="2"]').click()
+    .get('[name="+/-"]').click()
+    .get('[name=" + "]').click()
+    .get('[name="6"]').click()
+    .get('[name="="]').click()
+    .get('.display > :nth-child(1)').contains(4)
+  });
+
+  it('should show an error trying to make an operator negative or positive',() => {
+    cy.get('[name="9"]').click()
+      .get('[name=" / "]').click()
+      .get('[name="+/-"]').click()
+      .get('.error').contains('Syntax Error')
+  });
 });
+

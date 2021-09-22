@@ -9,5 +9,5 @@ describe('Header', () => {
 
   it('should not display a random app name', () => {
     cy.get('h1').should('not.contain', 'Mel\'s Money Maker')
-  })
+  });
 });
