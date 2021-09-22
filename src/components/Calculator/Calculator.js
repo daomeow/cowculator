@@ -199,7 +199,7 @@ function Calculator() {
       }
       <section>
         <button onClick={clearInput} className='main-button clear'>Clear</button>
-        <button onClick={backspaceInput} className='main-button operator'>c</button>
+        <button onClick={backspaceInput} name='back' className='main-button operator'>c</button>
       </section>
       <section className='button-container'>
         {buttonList}

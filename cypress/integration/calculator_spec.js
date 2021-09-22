@@ -89,5 +89,24 @@ describe('Calculator', () => {
       .get('[name="+/-"]').click()
       .get('.error').contains('Syntax Error')
   });
-});
 
+  it('should clear out the display after clicking the clear button', () => {
+    cy.get('[name="4"]').click()
+      .get('[name="3"]').click()
+      .get('[name="1"]').click()
+      .get('[name="1"]').click()
+      .get('[name="0"]').click()
+      .get('.clear').click()
+      .get('.display').should('have.text', '')
+  });
+
+  it('should remove only the last input after clicking the c button', () => {
+    cy.get('[name="6"]').click()
+      .get('[name=" * "]').click()
+      .get('[name="6"]').click()
+      .get('[name="6"]').click()
+      .get('[name="back"]').click()
+      .get('[name="="]').click()
+      .get('.display > :nth-child(1)').contains(36)
+  });
+});
