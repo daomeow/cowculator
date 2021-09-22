@@ -2,13 +2,23 @@ import { useState } from 'react';
 import './Buttons.css';
 
 function Buttons() {
-  const buttonInputs = [7, 8, 9, ' ÷ ', 4, 5, 6, ' x ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
+  const buttonInputs = [7, 8, 9, ' / ', 4, 5, 6, ' * ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
   const [error, setError] = useState('');
 
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
+  };
+  
+  const handleKey = (event) => {
+    if (event.key === 'Enter') {
+      setResult();
+    } else if(event.key === 'Backspace') {
+      clearInput();
+    } else {
+      setData(data.concat(event.key));
+    }
   };
 
   const clearInput = () => {
@@ -19,6 +29,7 @@ function Buttons() {
 
   const backspaceInput = () => {
     setData(data.slice(0, data.length - 1));
+    setTotal('');
     setError('');
   };
 
@@ -30,93 +41,70 @@ function Buttons() {
   // Generate buttons
   const buttonList = buttonInputs.map(button => {
     return (
-      <button onClick={handleClick} name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
+      <button onClick={handleClick} onKeyDown={handleKey} name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
     )
   });
 
-  // check position then arrange
+   // Addresses data to follow  parentheses order of operations 
   const checkParenthesesPosition = () => {
-    let numbers = data.split(' ');
+    const numbers = data.split(' ');
 
     if (numbers[2].includes('(')) {
-      let firstNumber = numbers.splice(0, 1);
-      let removedOperator = numbers.splice(0, 1);
-      let combine = numbers.concat(removedOperator);
-      let organized = combine.concat(firstNumber);
-      let joinNumbers = organized.join(' ');
+      const organized = sortInputsOrder(numbers);
+      const joinNumbers = organized.join(' ');
       return joinNumbers.split(/[()]+/).filter(item => item);
     } else {
       return data.split(/[()]+/).filter(item => item);
-    }
+    };
   };
 
   // Method to split with parentheses
   const splitWithParentheses = () => {
-    let organizedData = checkParenthesesPosition(); 
+    const organizedData = checkParenthesesPosition(); 
     // Two arrays of inputs as individual strings 
     const separateInputs = organizedData.map(item => item.split(''));
     const combine = separateInputs.flat();
-    const removeSpaces = combine.filter(function(entry) { return entry.trim() != ''; });
-
-    // Change numbers from string to integers & leave operators as strings 
-    let numbers = removeSpaces.map(item => {
-      if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
-        return parseFloat(item);
-      } else {
-        return item;
-      }
-    });
-
-    if (numbers.length > 5) {
-      setError('Syntax error');
-      return error;
-    } else {
-      console.log(numbers)
-      return numbers;
-    }
-  }
-
-  // split the string by spaces >> 1 + 2 + 3 >> [1 '+' 2] ['+' 3] >> [3 '+' 3]
-  const splitString = () => {
-    let allNumbers = data.split(' ')
-    let numbers = allNumbers.map(item => {
-      if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
-        return parseFloat(item);
-      } else {
-        return item;
-      }
-    });
-
-    if (numbers.length > 5) {
-      setError('Syntax error');
-      return error;
-    } else {
-      return numbers;
-    }
-  };
-
-  // method to check operator & rearrange (without parentheses)
-  const cleanNumbers = () => {
-    let a, operator, b, secondOperator, c;
-    let numbers = splitString();
-    [a, operator, b, secondOperator, c] = numbers;
+    const removeSpaces = combine.filter(function(entry) { return entry.trim() !== ''; });
+    const numbers = updateNumbersToIntegers(removeSpaces);
     
-    if (secondOperator === '÷' || secondOperator === 'x') {
-      let firstNumber = numbers.splice(0, 1);
-      let removedOperator = numbers.splice(0, 1);
-      let combine = numbers.concat(removedOperator);
-      return combine.concat(firstNumber);
+    if (numbers.length > 5) {
+      setError('Syntax error');
+      return error;
     } else {
       return numbers;
     };
   };
 
-  const calculateNumbers = (a, operator, b) => {
-    switch(operator) { 
-      case '+': return a + b;
-      case '-': return a - b; 
-      case 'x': return a * b; 
-      case '÷': return a / b;
+  const determineKeyOrClick = () => {
+    if (!data.includes(' ')) {
+      return data.split('').join(' ');
+    } else {
+      return data;
+    }
+  };
+
+  const splitString = () => {
+    const inputs = determineKeyOrClick();
+    const allNumbers = inputs.split(' ');
+    const numbers = updateNumbersToIntegers(allNumbers);
+
+    if (numbers.length > 5) {
+      setError('Syntax error');
+      return error;
+    } else {
+      return numbers;
+    };
+  };
+
+  // Addresses data to follow order of operations  
+  const cleanNumbers = () => {
+    const numbers = splitString();
+    const secondOperator = numbers[3];
+    
+    if (secondOperator === '÷' || secondOperator === '*') {
+      return sortInputsOrder(numbers);
+    } else {
+      return numbers;
     };
   };
 
@@ -126,33 +114,62 @@ function Buttons() {
     } else {
       return cleanNumbers();
     }
-  }
+  };
 
   const setResult = () => {
     let a, operator, b, secondOperator, c;
     [a, operator, b, secondOperator, c] = checkForParentheses();
 
-    if (splitString().length > 3) {
+    if (checkForParentheses().length > 3) {
       let firstResult = calculateNumbers(a, operator, b);
       setTotal(calculateNumbers(firstResult, secondOperator, c));
-    } else if (splitString().length === 3) {
+    } else if (checkForParentheses().length === 3) {
       setTotal(calculateNumbers(a, operator, b));
     };
   };
 
+  const calculateNumbers = (a, operator, b) => {
+    switch(operator) { 
+      case '+': return a + b;
+      case '-': return a - b; 
+      case '*': return a * b; 
+      case '/': return a / b;
+      default: return error;
+    };
+  };
+
+  // Updates numbers to integers and leaves operators as strings 
+  const updateNumbersToIntegers = (numbers) => {
+    return numbers.map(item => {
+      if (item !== '+' && item !== '-' && item !== '*' && item !== '÷') {
+        return parseFloat(item);
+      } else {
+        return item;
+      }
+    });
+  };
+
+  // Moves first number and operator to the back
+  const sortInputsOrder = (numbers) => {
+    const firstNumber = numbers.splice(0, 1);
+    const removedOperator = numbers.splice(0, 1);
+    const combine = numbers.concat(removedOperator);
+    return combine.concat(firstNumber);
+  };
+
   // Check if input can be set to +/-
   const checkInputInteger = () => {
-    if (data.length == 0 || isNaN(data)) {
+    if (data.length === 0 || isNaN(data)) {
       setError('Syntax Error');
     } else {
       return parseFloat(data.slice(-1));
     }
-  }
+  };
 
   // Toggle last integer to be positive or negative
   const toggleNegativePositive = () => {
-    let number = checkInputInteger();
-    let checkNumber = Math.sign(number);
+    const number = checkInputInteger();
+    const checkNumber = Math.sign(number);
     
     if (checkNumber === 1 && !error) {
       return -Math.abs(number);
@@ -164,10 +181,10 @@ function Buttons() {
   };
   
   const updateWithToggle = () => {
-    let number = toggleNegativePositive().toString();
-    let newData = data.substring(0, data.length -1);
+    const number = toggleNegativePositive().toString();
+    const newData = data.substring(0, data.length -1);
     setData(newData + number);
-  }
+  };
 
   return (
     <main>
@@ -190,7 +207,7 @@ function Buttons() {
       </section>
     </main>
   )
-}
+};
 
 export default Buttons;
 
