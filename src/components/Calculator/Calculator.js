@@ -117,14 +117,12 @@ function Calculator() {
   };
 
   const setResult = () => {
-    console.log('here')
     let a, operator, b, secondOperator, c;
     [a, operator, b, secondOperator, c] = checkForParentheses();
     console.log(checkForParentheses())
     if (checkForParentheses().length > 3) {
       let firstResult = calculateNumbers(a, operator, b);
       setTotal(calculateNumbers(firstResult, secondOperator, c));
-      console.log('hi')
     } else if (checkForParentheses().length === 3) {
       setTotal(calculateNumbers(a, operator, b));
     };
@@ -161,7 +159,8 @@ function Calculator() {
 
   // Check if input can be set to +/-
   const checkInputInteger = () => {
-    if (data.length === 0 || isNaN(data)) {
+    // console.log('here')
+    if (data.length === 0 || isNaN(data.slice(-1))) {
       setError('Syntax Error');
     } else {
       return parseFloat(data.slice(-1));
@@ -171,6 +170,7 @@ function Calculator() {
   // Toggle last integer to be positive or negative
   const toggleNegativePositive = () => {
     const number = checkInputInteger();
+    console.log(number)
     const checkNumber = Math.sign(number);
     
     if (checkNumber === 1 && !error) {
