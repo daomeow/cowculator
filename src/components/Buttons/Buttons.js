@@ -6,21 +6,26 @@ function Buttons() {
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
   const [error, setError] = useState('');
-  const keyPressedNumbersAllowed = ['0','1','2','3','4','5','6','7','8','9'];
-  const keyPressedOperatorsAllowed = ['/', '*', '-', '+', 'Enter'];
-
+  // const keyPressedNumbersAllowed = ['0','1','2','3','4','5','6','7','8','9'];
+  // const keyPressedOperatorsAllowed = ['/', '*', '-', '+', 'Enter'];
 
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
   };
   
   const handleKey = (event) => {
-    let keyName = event.key
-    console.log(keyName)
-    setData(data.concat(event.key))
-    
+    if (event.key === 'Enter') {
+      setResult();
+    } else if(event.key === 'Backspace') {
+      clearInput();
+    } else {
+      setData(data.concat(event.key));
+      
+    }
   }
+
   console.log(data)
+  // console.log(total)
 
   const clearInput = () => {
     setData('');
@@ -41,7 +46,7 @@ function Buttons() {
   // Generate buttons
   const buttonList = buttonInputs.map(button => {
     return (
-      <button onClick={handleClick} onKeyDown={handleKey} tabIndex="0" name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
+      <button onClick={handleClick} onKeyDown={handleKey} name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
     )
   });
 
@@ -67,7 +72,7 @@ function Buttons() {
     // Two arrays of inputs as individual strings 
     const separateInputs = organizedData.map(item => item.split(''));
     const combine = separateInputs.flat();
-    const removeSpaces = combine.filter(function(entry) { return entry.trim() != ''; });
+    const removeSpaces = combine.filter(function(entry) { return entry.trim() !== ''; });
 
     // Change numbers from string to integers & leave operators as strings 
     let numbers = removeSpaces.map(item => {
@@ -86,9 +91,20 @@ function Buttons() {
     }
   }
 
+  const determineKeyOrClick = () => {
+    if (!data.includes(' ')) {
+      console.log('yep')
+      return data.split('').join(' ')
+    } else {
+      return data;
+    }
+  }
+
   // split the string by spaces >> 1 + 2 + 3 >> [1 '+' 2] ['+' 3] >> [3 '+' 3]
   const splitString = () => {
-    let allNumbers = data.split(' ')
+    let inputs = determineKeyOrClick();
+    let allNumbers = inputs.split(' ');
+    console.log(allNumbers)
     let numbers = allNumbers.map(item => {
       if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
         return parseFloat(item);
@@ -101,6 +117,7 @@ function Buttons() {
       setError('Syntax error');
       return error;
     } else {
+      // console.log(numbers)
       return numbers;
     }
   };
@@ -152,7 +169,7 @@ function Buttons() {
 
   // Check if input can be set to +/-
   const checkInputInteger = () => {
-    if (data.length == 0 || isNaN(data)) {
+    if (data.length === 0 || isNaN(data)) {
       setError('Syntax Error');
     } else {
       return parseFloat(data.slice(-1));
