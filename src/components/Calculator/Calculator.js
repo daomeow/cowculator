@@ -204,7 +204,7 @@ function Calculator() {
       <section className='button-container'>
         {buttonList}
         <button onClick={handleClick} name='.' className='main-button'>.</button>
-        <button onClick={updateWithToggle} className='main-button'>+/-</button>
+        <button onClick={updateWithToggle} name ='+/-'className='main-button'>+/-</button>
         <button onClick={setResult} name='=' className='main-button operator equals'>=</button>
       </section>
     </main>
