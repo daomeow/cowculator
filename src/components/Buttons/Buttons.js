@@ -2,12 +2,10 @@ import { useState } from 'react';
 import './Buttons.css';
 
 function Buttons() {
-  const buttonInputs = [7, 8, 9, ' ÷ ', 4, 5, 6, ' x ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
+  const buttonInputs = [7, 8, 9, ' / ', 4, 5, 6, ' * ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
   const [error, setError] = useState('');
-  // const keyPressedNumbersAllowed = ['0','1','2','3','4','5','6','7','8','9'];
-  // const keyPressedOperatorsAllowed = ['/', '*', '-', '+', 'Enter'];
 
   const handleClick = (event) => {
     setData(data.concat(event.target.name));
@@ -20,12 +18,8 @@ function Buttons() {
       clearInput();
     } else {
       setData(data.concat(event.key));
-      
     }
-  }
-
-  console.log(data)
-  // console.log(total)
+  };
 
   const clearInput = () => {
     setData('');
@@ -76,25 +70,27 @@ function Buttons() {
 
     // Change numbers from string to integers & leave operators as strings 
     let numbers = removeSpaces.map(item => {
-      if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
+      if (item !== '+' && item !== '-' && item !== '*' && item !== '÷') {
         return parseFloat(item);
       } else {
         return item;
       }
     });
 
+    console.log(numbers.length)
     if (numbers.length > 5) {
-      setError('Syntax error');
+      console.log('here')
+      // setError('Syntax error');
       return error;
     } else {
+      console.log(numbers)
       return numbers;
     }
-  }
+  };
 
   const determineKeyOrClick = () => {
     if (!data.includes(' ')) {
-      console.log('yep')
-      return data.split('').join(' ')
+      return data.split('').join(' ');
     } else {
       return data;
     }
@@ -104,31 +100,27 @@ function Buttons() {
   const splitString = () => {
     let inputs = determineKeyOrClick();
     let allNumbers = inputs.split(' ');
-    console.log(allNumbers)
     let numbers = allNumbers.map(item => {
-      if (item !== '+' && item !== '-' && item !== 'x' && item !== '÷') {
+      if (item !== '+' && item !== '-' && item !== '*' && item !== '÷') {
         return parseFloat(item);
       } else {
         return item;
       }
     });
 
-    if (numbers.length > 5) {
-      setError('Syntax error');
-      return error;
-    } else {
-      // console.log(numbers)
-      return numbers;
-    }
+    // if (!checkForError(numbers)) {
+    //   return numbers;
+    // } else {
+    //   return error;
+    // };
   };
 
   // method to check operator & rearrange (without parentheses)
   const cleanNumbers = () => {
-    let a, operator, b, secondOperator, c;
     let numbers = splitString();
-    [a, operator, b, secondOperator, c] = numbers;
+    let secondOperator = numbers[3];
     
-    if (secondOperator === '÷' || secondOperator === 'x') {
+    if (secondOperator === '÷' || secondOperator === '*') {
       let firstNumber = numbers.splice(0, 1);
       let removedOperator = numbers.splice(0, 1);
       let combine = numbers.concat(removedOperator);
@@ -142,10 +134,20 @@ function Buttons() {
     switch(operator) { 
       case '+': return a + b;
       case '-': return a - b; 
-      case 'x': return a * b; 
-      case '÷': return a / b;
+      case '*': return a * b; 
+      case '/': return a / b;
+      default: return error;
     };
   };
+
+  // const checkForError = (numbers) => {
+  //   if (numbers.length > 5 || isNaN(numbers)) {
+  //     setError('Syntax error');
+  //     return error;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   const checkForParentheses = () => {
     if (data.includes('(')) {
@@ -153,16 +155,16 @@ function Buttons() {
     } else {
       return cleanNumbers();
     }
-  }
+  };
 
   const setResult = () => {
     let a, operator, b, secondOperator, c;
     [a, operator, b, secondOperator, c] = checkForParentheses();
 
-    if (splitString().length > 3) {
+    if (checkForParentheses().length > 3) {
       let firstResult = calculateNumbers(a, operator, b);
       setTotal(calculateNumbers(firstResult, secondOperator, c));
-    } else if (splitString().length === 3) {
+    } else if (checkForParentheses().length === 3) {
       setTotal(calculateNumbers(a, operator, b));
     };
   };
@@ -194,7 +196,7 @@ function Buttons() {
     let number = toggleNegativePositive().toString();
     let newData = data.substring(0, data.length -1);
     setData(newData + number);
-  }
+  };
 
   return (
     <main>
