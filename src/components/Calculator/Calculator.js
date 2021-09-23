@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './Calculator.css';
 
 function Calculator() {
-  const buttonInputs = [7, 8, 9, ' / ', 4, 5, 6, ' * ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
+  const buttonInputs = [7, 8, 9, '/', 4, 5, 6, '*', 1, 2, 3, '+', 0, '(', ')', '-'];
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
   const [error, setError] = useState('');
@@ -75,19 +75,29 @@ function Calculator() {
     };
   };
 
+  // const determineKeyOrClick = () => {
+  //   if (!data.includes(' ')) {
+  //     return addSpaceToOperator();
+  //   } else if (data.indexOf('  ') >= 0) {
+  //     const removeExtraSpaces = data.split(' ').join('').concat();
+  //     return removeExtraSpaces.split('').join(' ');
+  //   } else {
+  //     return data;
+  //   };
+  // };
+
   const determineKeyOrClick = () => {
-    if (!data.includes(' ')) {
-      return addSpaceToOperator();
-    } else if (data.indexOf('  ') >= 0) {
+   if (data.indexOf('  ') >= 0) {
       const removeExtraSpaces = data.split(' ').join('').concat();
       return removeExtraSpaces.split('').join(' ');
     } else {
-      return data;
-    };
+      return addSpaceToOperator();
+    };    
   };
-
+  
   const splitString = () => {
     const inputs = determineKeyOrClick();
+    console.log(inputs)
     const allNumbers = inputs.split(' ');
     const numbers = updateNumbersToIntegers(allNumbers);
     
@@ -131,7 +141,7 @@ function Calculator() {
   const runCalculation = () => {
     let a, operator, b, secondOperator, c;
     [a, operator, b, secondOperator, c] = checkForParentheses();
-
+       
     if (checkForParentheses().length > 3) {
       let firstResult = calculateNumbers(a, operator, b);
       return (calculateNumbers(firstResult, secondOperator, c));
@@ -143,11 +153,11 @@ function Calculator() {
   const setResult = () => {
     const result = runCalculation();
 
-    if (!result === NaN) {
+    if (!isNaN(result)) {
       setTotal(result);
     } else {
       setError('Syntax error');
-    }
+    };
   };
 
   // Updates numbers to integers and leaves operators as strings 
@@ -170,9 +180,7 @@ function Calculator() {
   };
 
   const addSpaceToOperator = () => {
-    const operators = ['+', '-',  '*', '/'];
-    const currentOperator = operators.find(number => data.includes(number));
-    return data.replace(currentOperator, ' ' + currentOperator + ' ');   
+    return data.replace(/[+]/g,' + ').replace(/[-]/g,' - ').replace(/[*]/g,' * ').replace(/[/]/g,' / ');
   };
 
   // Check if input can be set to +/-
