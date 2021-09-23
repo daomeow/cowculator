@@ -88,15 +88,9 @@ function Calculator() {
   };
 
   const addSpaceToOperator = () => {
-    if (data.includes('+')) {
-      return data.replace('+', ' + ')
-    } else if (data.includes('-')) {
-      return data.replace('-', ' - ')
-    } else if (data.includes('*')) {
-      return data.replace('*', ' * ')
-    } else if (data.includes('/')) {
-      return data.replace('/', ' / ')
-    }
+    const operators = ['+', '-',  '*', '/'];
+    const currentOperator = operators.find(number => data.includes(number));
+    return data.replace(currentOperator, ' ' + currentOperator + ' ');   
   };
 
 
