@@ -83,7 +83,7 @@ describe('Calculator', () => {
     .get('.display > :nth-child(1)').contains(18)
   });
 
-  it('should be able to make a positive input negative after clicking button', () => {
+  it.skip('should be able to make a positive input negative after clicking button', () => {
     cy.get('[name="2"]').click()
     .get('[name="+/-"]').click()
     .get('[name="+"]').click()
@@ -118,5 +118,20 @@ describe('Calculator', () => {
       .get('[name="back"]').click()
       .get('[name="="]').click()
       .get('.display > :nth-child(1)').contains(36)
+  });
+
+  it('should be able to calculate typing on the keyboard', () => {
+    cy.get('input').click().type("7").type("+").type("1").type("2").type('{enter}')
+      .get('.total').should('have.text', 19)
+  });
+
+  it('should display error if an invalid calculation is typed', () => {
+    cy.get('input').click().type("9").type("+").type("v").type("i").type("d").type("m").type("o").type("b").type('{enter}')
+      .get('.error').should('have.text', 'Syntax error')
+  });
+
+  it('should calculate valid math even with extra spaces', () => {
+    cy.get('input').click().type("4").type(" ").type(" ").type(" ").type(" ").type("*").type("4").type("{enter}")
+      .get('.total').should('have.text', 16)
   });
 });

@@ -45,7 +45,7 @@ function Calculator() {
     )
   });
 
-   // Addresses data to follow  parentheses order of operations 
+   // Addresses data to follow order of operations inside parentheses
   const checkParenthesesPosition = () => {
     const updatedData = addSpaceToOperator();
     const numbers = updatedData.split(' ');
@@ -59,15 +59,14 @@ function Calculator() {
     };
   };
 
-  // Method to split with parentheses
+  // Method to split into an array of inputs
   const splitWithParentheses = () => {
     const organizedData = checkParenthesesPosition(); 
-    // Two arrays of inputs as individual strings 
     const separateInputs = organizedData.map(item => item.split(''));
     const combine = separateInputs.flat();
     const removeSpaces = combine.filter(function(entry) { return entry.trim() !== ''; });
     const numbers = updateNumbersToIntegers(removeSpaces);
-    
+
     if (numbers.length > 5) {
       setError('Syntax error');
       return error;
@@ -130,7 +129,7 @@ function Calculator() {
   const runCalculation = () => {
     let a, operator, b, secondOperator, c;
     [a, operator, b, secondOperator, c] = checkForParentheses();
-       
+
     if (checkForParentheses().length > 3) {
       let firstResult = calculateNumbers(a, operator, b);
       return (calculateNumbers(firstResult, secondOperator, c));
@@ -206,7 +205,7 @@ function Calculator() {
       {error === ''
         ? <section className='display'>
             <div className='total'>{total}</div>
-            <input type='text' value={data} readOnly onKeyDown={handleKey}/>
+            <input type='text' value={data} onKeyDown={handleKey}/>
           </section>
         : <span className='error'>{error}</span>
       }
