@@ -4,12 +4,13 @@ main {
     align-items: center;
 }
 
-/* input[type="text"] {
-  width: 15.5rem;
-  height: 3rem;
+input[type="text"] {
+  width: 16rem;
+  height: 2.9rem;
   text-align: right;
   font-size: 18px;
-} */
+  border: 0;
+}
 
 .display, 
 .error {
@@ -19,6 +20,15 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+
+.total {
+  position: absolute
+}
+
+.error {
+  justify-content: center;
 }
 
 .button-container {

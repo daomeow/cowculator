@@ -193,7 +193,7 @@ function Calculator() {
     <main>
       {error === ''
         ? <section className='display'>
-            <div>{total}</div>
+            <div className='total'>{total}</div>
             <input type='text' value={data} readOnly onKeyDown={handleKey}/>
           </section>
         : <span className='error'>{error}</span>
