@@ -47,8 +47,9 @@ function Calculator() {
 
    // Addresses data to follow  parentheses order of operations 
   const checkParenthesesPosition = () => {
-    const numbers = data.split(' ');
-
+    const updatedData = addSpaceToOperator();
+    const numbers = updatedData.split(' ');
+  
     if (numbers[2].includes('(')) {
       const organized = sortInputsOrder(numbers);
       const joinNumbers = organized.join(' ');
@@ -75,17 +76,6 @@ function Calculator() {
     };
   };
 
-  // const determineKeyOrClick = () => {
-  //   if (!data.includes(' ')) {
-  //     return addSpaceToOperator();
-  //   } else if (data.indexOf('  ') >= 0) {
-  //     const removeExtraSpaces = data.split(' ').join('').concat();
-  //     return removeExtraSpaces.split('').join(' ');
-  //   } else {
-  //     return data;
-  //   };
-  // };
-
   const determineKeyOrClick = () => {
    if (data.indexOf('  ') >= 0) {
       const removeExtraSpaces = data.split(' ').join('').concat();
@@ -97,7 +87,6 @@ function Calculator() {
   
   const splitString = () => {
     const inputs = determineKeyOrClick();
-    console.log(inputs)
     const allNumbers = inputs.split(' ');
     const numbers = updateNumbersToIntegers(allNumbers);
     
