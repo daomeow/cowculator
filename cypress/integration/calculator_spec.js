@@ -13,7 +13,7 @@ describe('Calculator', () => {
   });
 
   // Functionality to divide, multiply, add, and subtract without parentheses 
-  it.only('should be able to divide whole numbers', () => {
+  it('should be able to divide whole numbers', () => {
     cy.get('[name="1"]').click()
       .get('[name="0"]').click()
       .get('[name=" / "]').click()
@@ -22,7 +22,7 @@ describe('Calculator', () => {
       .get('.display > :nth-child(1)').contains(5)
   });
 
-  it('should display an error trying to calculate invalid inputs', ()=> {
+  it.only('should display an error trying to calculate invalid inputs', ()=> {
     cy.get('[name="9"]').click()
       .get('[name=" + "]').click()
       .get('[name=" - "]').click()
@@ -92,12 +92,13 @@ describe('Calculator', () => {
     .get('.display > :nth-child(1)').contains(4)
   });
 
-  // it.only('should show an error trying to make an operator negative or positive',() => {
-  //   cy.get('[name="9"]').click()
-  //     .get('[name=" / "]').click()
-  //     .get('[name="+/-"]').click()
-  //     .get('.error').contains('Syntax Error')
-  // });
+  it('should show an error trying to make an operator negative or positive',() => {
+    cy.get('[name="9"]').click()
+      cy.get('[name=" + "]').click()
+      .get('[name="+/-"]').click()
+      .get('[name="+/-"]').click()
+      .get('.error').should('have.text','Syntax error')
+  });
 
   it('should clear out the display after clicking the clear button', () => {
     cy.get('[name="4"]').click()

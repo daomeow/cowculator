@@ -41,7 +41,7 @@ function Calculator() {
   // Generate buttons
   const buttonList = buttonInputs.map(button => {
     return (
-      <button onClick={handleClick} onKeyDown={handleKey} name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
+      <button onClick={handleClick} name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
     )
   });
 
@@ -78,7 +78,11 @@ function Calculator() {
   const determineKeyOrClick = () => {
     if (!data.includes(' ')) {
       return data.split('').join(' ');
-    } else {
+    } else if (data.indexOf('  ') >= 0) {
+      const removeExtraSpaces = data.split(' ').join('').concat();
+      return removeExtraSpaces.split('').join(' ');
+    } 
+    else {
       return data;
     }
   };
@@ -87,8 +91,7 @@ function Calculator() {
     const inputs = determineKeyOrClick();
     const allNumbers = inputs.split(' ');
     const numbers = updateNumbersToIntegers(allNumbers);
-    
-    if (numbers.length > 5 || numbers.map(num => num === NaN)) {
+    if (numbers.length > 5) {
       setError('Syntax error');
       return error;
     } else {
@@ -100,7 +103,6 @@ function Calculator() {
   const cleanNumbers = () => {
     const numbers = splitString();
     const secondOperator = numbers[3];
-    
     if (secondOperator === '/' || secondOperator === '*') {
       return sortInputsOrder(numbers);
     } else {
@@ -160,7 +162,7 @@ function Calculator() {
   // Check if input can be set to +/-
   const checkInputInteger = () => {
     if (data.length === 0 || isNaN(data.slice(-1))) {
-      setError('Syntax Error');
+      setError('Syntax error');
     } else {
       return parseFloat(data.slice(-1));
     }
@@ -192,7 +194,7 @@ function Calculator() {
       {error === ''
         ? <section className='display'>
             <div>{total}</div>
-            <div>{data}</div>
+            <input type='text' value={data} readOnly onKeyDown={handleKey}/>
           </section>
         : <span className='error'>{error}</span>
       }
