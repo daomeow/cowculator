@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import './Buttons.css';
+import './Calculator.css';
 
-function Buttons() {
-  const buttonInputs = [7, 8, 9, ' / ', 4, 5, 6, ' * ', 1, 2, 3, ' + ', 0, '(', ')', ' - '];
+function Calculator() {
+  const buttonInputs = [7, 8, 9, '/', 4, 5, 6, '*', 1, 2, 3, '+', 0, '(', ')', '-'];
   const [data, setData] = useState('');
   const [total, setTotal] = useState('');
   const [error, setError] = useState('');
@@ -41,14 +41,15 @@ function Buttons() {
   // Generate buttons
   const buttonList = buttonInputs.map(button => {
     return (
-      <button onClick={handleClick} onKeyDown={handleKey} name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
+      <button onClick={handleClick} name={button} key={button} className={`main-button ${confirmOperator(button) ? null : 'operator'}`}>{button}</button>
     )
   });
 
-   // Addresses data to follow  parentheses order of operations 
+   // Addresses data to follow order of operations inside parentheses
   const checkParenthesesPosition = () => {
-    const numbers = data.split(' ');
-
+    const updatedData = addSpaceToOperator();
+    const numbers = updatedData.split(' ');
+  
     if (numbers[2].includes('(')) {
       const organized = sortInputsOrder(numbers);
       const joinNumbers = organized.join(' ');
@@ -58,15 +59,14 @@ function Buttons() {
     };
   };
 
-  // Method to split with parentheses
+  // Method to split into an array of inputs
   const splitWithParentheses = () => {
     const organizedData = checkParenthesesPosition(); 
-    // Two arrays of inputs as individual strings 
     const separateInputs = organizedData.map(item => item.split(''));
     const combine = separateInputs.flat();
     const removeSpaces = combine.filter(function(entry) { return entry.trim() !== ''; });
     const numbers = updateNumbersToIntegers(removeSpaces);
-    
+
     if (numbers.length > 5) {
       setError('Syntax error');
       return error;
@@ -76,18 +76,19 @@ function Buttons() {
   };
 
   const determineKeyOrClick = () => {
-    if (!data.includes(' ')) {
-      return data.split('').join(' ');
+   if (data.indexOf('  ') >= 0) {
+      const removeExtraSpaces = data.split(' ').join('').concat();
+      return removeExtraSpaces.split('').join(' ');
     } else {
-      return data;
-    }
+      return addSpaceToOperator();
+    };    
   };
-
+  
   const splitString = () => {
     const inputs = determineKeyOrClick();
     const allNumbers = inputs.split(' ');
     const numbers = updateNumbersToIntegers(allNumbers);
-
+    
     if (numbers.length > 5) {
       setError('Syntax error');
       return error;
@@ -100,8 +101,7 @@ function Buttons() {
   const cleanNumbers = () => {
     const numbers = splitString();
     const secondOperator = numbers[3];
-    
-    if (secondOperator === '÷' || secondOperator === '*') {
+    if (secondOperator === '/' || secondOperator === '*') {
       return sortInputsOrder(numbers);
     } else {
       return numbers;
@@ -116,18 +116,6 @@ function Buttons() {
     }
   };
 
-  const setResult = () => {
-    let a, operator, b, secondOperator, c;
-    [a, operator, b, secondOperator, c] = checkForParentheses();
-
-    if (checkForParentheses().length > 3) {
-      let firstResult = calculateNumbers(a, operator, b);
-      setTotal(calculateNumbers(firstResult, secondOperator, c));
-    } else if (checkForParentheses().length === 3) {
-      setTotal(calculateNumbers(a, operator, b));
-    };
-  };
-
   const calculateNumbers = (a, operator, b) => {
     switch(operator) { 
       case '+': return a + b;
@@ -138,10 +126,32 @@ function Buttons() {
     };
   };
 
+  const runCalculation = () => {
+    let a, operator, b, secondOperator, c;
+    [a, operator, b, secondOperator, c] = checkForParentheses();
+
+    if (checkForParentheses().length > 3) {
+      let firstResult = calculateNumbers(a, operator, b);
+      return (calculateNumbers(firstResult, secondOperator, c));
+    } else if (checkForParentheses().length === 3) {
+      return (calculateNumbers(a, operator, b));
+    };
+  };
+
+  const setResult = () => {
+    const result = runCalculation();
+
+    if (!isNaN(result)) {
+      setTotal(result);
+    } else {
+      setError('Syntax error');
+    };
+  };
+
   // Updates numbers to integers and leaves operators as strings 
   const updateNumbersToIntegers = (numbers) => {
     return numbers.map(item => {
-      if (item !== '+' && item !== '-' && item !== '*' && item !== '÷') {
+      if (item !== '+' && item !== '-' && item !== '*' && item !== '/') {
         return parseFloat(item);
       } else {
         return item;
@@ -157,16 +167,20 @@ function Buttons() {
     return combine.concat(firstNumber);
   };
 
+  const addSpaceToOperator = () => {
+    return data.replace(/[+]/g,' + ').replace(/[-]/g,' - ').replace(/[*]/g,' * ').replace(/[/]/g,' / ');
+  };
+
   // Check if input can be set to +/-
   const checkInputInteger = () => {
-    if (data.length === 0 || isNaN(data)) {
-      setError('Syntax Error');
+    if (data.length === 0 || isNaN(data.slice(-1))) {
+      setError('Syntax error');
     } else {
       return parseFloat(data.slice(-1));
     }
   };
 
-  // Toggle last integer to be positive or negative
+  // Toggle integer to be positive or negative
   const toggleNegativePositive = () => {
     const number = checkInputInteger();
     const checkNumber = Math.sign(number);
@@ -190,25 +204,25 @@ function Buttons() {
     <main>
       {error === ''
         ? <section className='display'>
-            <div>{total}</div>
-            <div>{data}</div>
+            <div className='total'>{total}</div>
+            <input type='text' value={data} onKeyDown={handleKey}/>
           </section>
         : <span className='error'>{error}</span>
       }
       <section>
         <button onClick={clearInput} className='main-button clear'>Clear</button>
-        <button onClick={backspaceInput} className='main-button operator'>c</button>
+        <button onClick={backspaceInput} name='back' className='main-button operator'>c</button>
       </section>
       <section className='button-container'>
         {buttonList}
         <button onClick={handleClick} name='.' className='main-button'>.</button>
-        <button onClick={updateWithToggle} className='main-button'>+/-</button>
+        <button onClick={updateWithToggle} name ='+/-'className='main-button'>+/-</button>
         <button onClick={setResult} name='=' className='main-button operator equals'>=</button>
       </section>
     </main>
   )
 };
 
-export default Buttons;
+export default Calculator;
 
 
