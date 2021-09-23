@@ -209,15 +209,17 @@ function Calculator() {
           </section>
         : <span className='error'>{error}</span>
       }
-      <section>
-        <button onClick={clearInput} className='main-button clear'>Clear</button>
-        <button onClick={backspaceInput} name='back' className='main-button operator'>c</button>
-      </section>
-      <section className='button-container'>
-        {buttonList}
-        <button onClick={handleClick} name='.' className='main-button'>.</button>
-        <button onClick={updateWithToggle} name ='+/-'className='main-button'>+/-</button>
-        <button onClick={setResult} name='=' className='main-button operator equals'>=</button>
+      <section className='keypad'>
+        <section>
+          <button onClick={clearInput} className='main-button clear'>Clear</button>
+          <button onClick={backspaceInput} name='back' className='main-button operator'>c</button>
+        </section>
+        <section className='button-container'>
+          {buttonList}
+          <button onClick={handleClick} name='.' className='main-button'>.</button>
+          <button onClick={updateWithToggle} name ='+/-'className='main-button'>+/-</button>
+          <button onClick={setResult} name='=' className='main-button operator equals'>=</button>
+        </section>
       </section>
     </main>
   )

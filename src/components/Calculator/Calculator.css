@@ -20,8 +20,9 @@ input[type="text"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
+  outline: 5px solid black;
 
+}
 
 .total {
   position: absolute
@@ -29,6 +30,11 @@ input[type="text"] {
 
 .error {
   justify-content: center;
+}
+
+.keypad {
+  background-color: black;
+  outline: 5px solid black;
 }
 
 .button-container {
@@ -44,7 +50,7 @@ input[type="text"] {
   font-size: 1.4rem;
   background-color: #e0e1e6;
   color: #888;
-  outline: 1px solid #888;
+  border-radius: 10px;
 }
 
 .operator {
