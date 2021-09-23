@@ -81,25 +81,16 @@ function Calculator() {
     } else if (data.indexOf('  ') >= 0) {
       const removeExtraSpaces = data.split(' ').join('').concat();
       return removeExtraSpaces.split('').join(' ');
-    } 
-    else {
+    } else {
       return data;
-    }
+    };
   };
-
-  const addSpaceToOperator = () => {
-    const operators = ['+', '-',  '*', '/'];
-    const currentOperator = operators.find(number => data.includes(number));
-    return data.replace(currentOperator, ' ' + currentOperator + ' ');   
-  };
-
 
   const splitString = () => {
     const inputs = determineKeyOrClick();
-    console.log(inputs)
     const allNumbers = inputs.split(' ');
     const numbers = updateNumbersToIntegers(allNumbers);
-    // console.log(numbers)
+    
     if (numbers.length > 5) {
       setError('Syntax error');
       return error;
@@ -127,18 +118,6 @@ function Calculator() {
     }
   };
 
-  const setResult = () => {
-    let a, operator, b, secondOperator, c;
-    [a, operator, b, secondOperator, c] = checkForParentheses();
-
-    if (checkForParentheses().length > 3) {
-      let firstResult = calculateNumbers(a, operator, b);
-      setTotal(calculateNumbers(firstResult, secondOperator, c));
-    } else if (checkForParentheses().length === 3) {
-      setTotal(calculateNumbers(a, operator, b));
-    };
-  };
-
   const calculateNumbers = (a, operator, b) => {
     switch(operator) { 
       case '+': return a + b;
@@ -147,6 +126,28 @@ function Calculator() {
       case '/': return a / b;
       default: return error;
     };
+  };
+
+  const runCalculation = () => {
+    let a, operator, b, secondOperator, c;
+    [a, operator, b, secondOperator, c] = checkForParentheses();
+
+    if (checkForParentheses().length > 3) {
+      let firstResult = calculateNumbers(a, operator, b);
+      return (calculateNumbers(firstResult, secondOperator, c));
+    } else if (checkForParentheses().length === 3) {
+      return (calculateNumbers(a, operator, b));
+    };
+  };
+
+  const setResult = () => {
+    const result = runCalculation();
+
+    if (!result === NaN) {
+      setTotal(result);
+    } else {
+      setError('Syntax error');
+    }
   };
 
   // Updates numbers to integers and leaves operators as strings 
@@ -168,6 +169,12 @@ function Calculator() {
     return combine.concat(firstNumber);
   };
 
+  const addSpaceToOperator = () => {
+    const operators = ['+', '-',  '*', '/'];
+    const currentOperator = operators.find(number => data.includes(number));
+    return data.replace(currentOperator, ' ' + currentOperator + ' ');   
+  };
+
   // Check if input can be set to +/-
   const checkInputInteger = () => {
     if (data.length === 0 || isNaN(data.slice(-1))) {
@@ -177,7 +184,7 @@ function Calculator() {
     }
   };
 
-  // Toggle last integer to be positive or negative
+  // Toggle integer to be positive or negative
   const toggleNegativePositive = () => {
     const number = checkInputInteger();
     const checkNumber = Math.sign(number);
