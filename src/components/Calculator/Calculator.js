@@ -77,7 +77,7 @@ function Calculator() {
 
   const determineKeyOrClick = () => {
     if (!data.includes(' ')) {
-      return data.split('').join(' ');
+      return addSpaceToOperator();
     } else if (data.indexOf('  ') >= 0) {
       const removeExtraSpaces = data.split(' ').join('').concat();
       return removeExtraSpaces.split('').join(' ');
@@ -87,10 +87,25 @@ function Calculator() {
     }
   };
 
+  const addSpaceToOperator = () => {
+    if (data.includes('+')) {
+      return data.replace('+', ' + ')
+    } else if (data.includes('-')) {
+      return data.replace('-', ' - ')
+    } else if (data.includes('*')) {
+      return data.replace('*', ' * ')
+    } else if (data.includes('/')) {
+      return data.replace('/', ' / ')
+    }
+  };
+
+
   const splitString = () => {
     const inputs = determineKeyOrClick();
+    console.log(inputs)
     const allNumbers = inputs.split(' ');
     const numbers = updateNumbersToIntegers(allNumbers);
+    // console.log(numbers)
     if (numbers.length > 5) {
       setError('Syntax error');
       return error;
@@ -171,7 +186,6 @@ function Calculator() {
   // Toggle last integer to be positive or negative
   const toggleNegativePositive = () => {
     const number = checkInputInteger();
-    console.log(number)
     const checkNumber = Math.sign(number);
     
     if (checkNumber === 1 && !error) {
