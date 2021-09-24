@@ -20,7 +20,7 @@
                                                                                            
 <a name="installation"></a>
 ## Installation
-1. Clone down this [repo](git@github.com:daomeow/cowculator.git)
+1. Clone down this [repo](https://github.com/daomeow/cowculator)
 2. `cd` into project directory
 3. Run `npm i` to install all project dependencies
 4. Run `npm run dev` to begin the server
