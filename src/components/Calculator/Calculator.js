@@ -207,10 +207,10 @@ function Calculator() {
   return (
     <main>
       {error === ''
-        ? <section className='display'>
+        ? <label className='display' htmlFor='input data'>
             <div className='total'>{total}</div>
-            <input type='text' value={data} onKeyDown={handleKey}/>
-          </section>
+            <input type='text' value={data} onKeyDown={handleKey} id='input data'/>
+          </label>
         : <span className='error'>{error}</span>
       }
       <section className='keypad'>
