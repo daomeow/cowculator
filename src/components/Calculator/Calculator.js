@@ -59,23 +59,18 @@ function Calculator() {
     };
   };
 
-  // Method to split into an array of inputs
+  // Split parentheses inputs into an array
   const splitWithParentheses = () => {
     const organizedData = checkParenthesesPosition(); 
     const separateInputs = organizedData.map(item => item.split(/\s/));
-    console.log(separateInputs)
     const combine = separateInputs.flat();
-    console.log(combine)
-    
     const updateOperator = combine.map(input => {
       return input.replace(/[+]/g,' + ').replace(/[-]/g,' - ').replace(/[*]/g,' * ').replace(/[/]/g,' / ')
     });
     const individualInputs = updateOperator.map(input => input.split(' '));
     const combineAllInputs = individualInputs.flat();
     const removeSpaces = combineAllInputs.filter(function(entry) { return entry.trim() !== ''; });
-    console.log(removeSpaces)
     const numbers = updateNumbersToIntegers(removeSpaces);
-    console.log(numbers)
     if (numbers.length > 5) {
       setError('Syntax error');
       return error;
@@ -236,4 +231,6 @@ function Calculator() {
 
 export default Calculator;
 
-
+// Toggle +/-: able to display but functionality to calculate sadly does not work
+// Reason: addSpaceToOperator method adds a space to the negative sign causing NaN when other methods are trying to split the array based on spaces around the operator
+// Ideas: Add methods to check if the '-' is in front of the first number or back-to-back with another operator. If so, don't add spaces around that '-' so that the other methods will treat it as part of the number and will convert the number string as an integer with the negative.  
