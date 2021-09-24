@@ -9,10 +9,9 @@
 <a name="description"></a>
 ## Description
 - Built in React.js (without the use of its built in function `eval()`)
-- Application will take text (click calculator display) or string inputs (calculator buttons)
-- Support positive, negative, and decimal numbers (follows order of operations)
-- Only 2 operators in series, the calculator will need to be cleared or canceled to continue 
-- Supports parentheses (clicked)
+- Application will take text (click calculator display to start typing) or string inputs (calculator buttons)
+- Only 2 operators in series - the calculator will need to be cleared or canceled to continue 
+- Supports parentheses
 - Future features: ability to toggle the positive and negative button and add a more streamlined user experience to go from one problem to the next without having to clear the display
 -  [Click here](https://vidmob-cowculator.herokuapp.com/) to deploy the application
  
@@ -21,7 +20,7 @@
                                                                                            
 <a name="installation"></a>
 ## Installation
-1. Clone down this [repo](https://github.com/Gifty-capstone/gifty-frontend)
+1. Clone down this [repo](git@github.com:daomeow/cowculator.git)
 2. `cd` into project directory
 3. Run `npm i` to install all project dependencies
 4. Run `npm run dev` to begin the server
