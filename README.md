@@ -10,7 +10,8 @@
 ## Description
  - 
  
-<img src="https://media.giphy.com/media/Gudz8o4uE5gnsh5xNK/giphy-downsized.gif" width="600">
+<img src="https://media.giphy.com/media/5FkJhiTrw9mY5PL10l/giphy.gif" width="600>
+
 
 <a name="installation"></a>
 ## Installation
