@@ -8,7 +8,7 @@
 
 <a name="description"></a>
 ## Description
-- Built in React.js (without the use of its built in function eval())
+- Built in React.js (without the use of its built in function `eval()`)
 - Application will take text (click calculator display) or string inputs (calculator buttons)
 - Support positive, negative, and decimal numbers (follows order of operations)
 - Only 2 operators in series, the calculator will need to be cleared or canceled to continue 
