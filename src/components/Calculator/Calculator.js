@@ -62,11 +62,20 @@ function Calculator() {
   // Method to split into an array of inputs
   const splitWithParentheses = () => {
     const organizedData = checkParenthesesPosition(); 
-    const separateInputs = organizedData.map(item => item.split(''));
+    const separateInputs = organizedData.map(item => item.split(/\s/));
+    console.log(separateInputs)
     const combine = separateInputs.flat();
-    const removeSpaces = combine.filter(function(entry) { return entry.trim() !== ''; });
+    console.log(combine)
+    
+    const updateOperator = combine.map(input => {
+      return input.replace(/[+]/g,' + ').replace(/[-]/g,' - ').replace(/[*]/g,' * ').replace(/[/]/g,' / ')
+    });
+    const individualInputs = updateOperator.map(input => input.split(' '));
+    const combineAllInputs = individualInputs.flat();
+    const removeSpaces = combineAllInputs.filter(function(entry) { return entry.trim() !== ''; });
+    console.log(removeSpaces)
     const numbers = updateNumbersToIntegers(removeSpaces);
-
+    console.log(numbers)
     if (numbers.length > 5) {
       setError('Syntax error');
       return error;
